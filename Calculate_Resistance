@@ -1,41 +1,41 @@
 #include <stdio.h>
 #include <string.h>
-
-int find_index(char *arr[], int size, char *target) {
+int search(char list[][10], int size, char target[]) {
     for (int i = 0; i < size; i++) {
-        if (strcmp(arr[i], target) == 0)
-            return i;
+    if (strcmp(list[i], target) == 0) {
+         return i;
+    }
     }
     return -1;
-}
-
+    }
 int main() {
-    char *COLOR_CODES[10] = {"black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "gray", "white"};
-    int repeat = 1;
+    char COLOR_CODES[10][10] = {
+        "black", "brown", "red", "orange", "yellow",
+        "green", "blue", "violet", "gray", "white"
+    };
+    char band1[10], band2[10], band3[10];
+    printf("Enter the colors of the resistor's three bands, beginning with the band nearest the end.\n");
+    printf("Type the colors in lowercase letters only, NO CAPS.\n");
 
-    while (repeat) {
-        char band1[10], band2[10], band3[10];
-        printf("Enter the colors of the resistor's three bands:\n");
-        printf("Band 1 => ");
-        scanf("%s", band1);
-        printf("Band 2 => ");
-        scanf("%s", band2);
-        printf("Band 3 => ");
-        scanf("%s", band3);
+    printf("Band 1: ");
+    scanf("%s", band1);
+    printf("Band 2: ");
+    scanf("%s", band2);
+    printf("Band 3: ");
+    scanf("%s", band3);
+    int index1 = search(COLOR_CODES, 10, band1);
+    int index2 = search(COLOR_CODES, 10, band2);
+    int index3 = search(COLOR_CODES, 10, band3);
 
-        int digit1 = find_index(COLOR_CODES, 10, band1);
-        int digit2 = find_index(COLOR_CODES, 10, band2);
-        int multiplier = find_index(COLOR_CODES, 10, band3);
-
-        if (digit1 == -1 || digit2 == -1 || multiplier == -1) {
-            printf("Invalid color entered. Try again.\n");
-        } else {
-            int resistance = (digit1 * 10 + digit2) * (1 << multiplier);
-            printf("Resistance value: %d kilo-ohms\n", resistance);
-        }
-
-        printf("Do you want to decode another resistor? (1 for yes, 0 for no): ");
-        scanf("%d", &repeat);
+    if (index1 == -1 || index2 == -1 || index3 == -1) {
+        printf("Invalid color entered!\n");
+        return 1;
+    }
+    int resistance = (index1 * 10 + index2) * pow(10, index3);
+    if (resistance >= 1000) {
+        printf("The resistance value is: %.2f kOhms\n", resistance / 1000.0);
+    } else {
+        printf("The resistance value is: %d Ohms\n", resistance);
     }
 
     return 0;
